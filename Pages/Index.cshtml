@@ -1,0 +1,212 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<header style="background:linear-gradient(to left, #14477e, #5bcbf4);"></header>
+
+<div class="container">
+    <div class="row">
+        <div class="col s5 m5">
+            <h4 style="color:#14477e;">1. Generar token</h4>
+        </div>
+
+        <div class="col s7 m7">
+            <h4 style="color:#14477e;">2. Redactar Mensaje</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s5 m5">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+
+                        <form class="col s12 m12" id="tokenform" method="post">
+                            <div class="input-field col s12 m12">
+                                <i class="material-icons prefix ">vpn_key</i>
+                                <input id="api" type="text" name="api" />
+                                <label for="api">API KEY</label>
+                            </div>
+
+                            <div class="input-field col s12 m12">
+                                <i class="material-icons prefix ">lock_outline</i>
+                                <input id="token" type="text" name="api" disabled />
+                                <label for="toke">TOKEN</label>
+                            </div>
+                        </form>
+
+                        <div class="col s12 m12 center">
+                            <button class="btn waves-effect waves-light blue darken-1"
+                                    type="submit"
+                                    name="action"
+                                    form="tokenform"
+                                    >
+                                Generar
+                                <i class="material-icons right">swap_vert</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s7 m7">
+            <div class="card">
+                <div class="card-content">
+                    <div class="row">
+                        <form class="col s12 m12"
+                              id="apiform"
+                              method="post"
+                              action="/*classes/sms.php*/">
+                            <div class="input-field col s12 m12">
+                                <i class="material-icons prefix ">list</i>
+                                <input id="nombre" type="text" name="api" />
+                                <label for="nombre">Nombre</label>
+                            </div>
+
+                            <div class="input-field col s4 m4">
+                                <i class="material-icons prefix ">phone</i>
+                                <select id="country">
+                                    <option value="52"
+                                            data-icon="/img/mexico.svg"
+                                            selected>
+                                        52
+                                    </option>
+                                    <option value="1"
+                                            data-icon="/img/estados-unidos.svg">
+                                        1
+                                    </option>
+                                    <option value="18"
+                                            data-icon="/img/republica-dominicana.svg">
+                                        18
+                                    </option>
+                                    <option value="34" data-icon="/img/espana.svg">
+                                        34
+                                    </option>
+                                    <option value="51" data-icon="/img/peru.svg">
+                                        51
+                                    </option>
+                                    <option value="53" data-icon="/img/cuba.svg">
+                                        53
+                                    </option>
+                                    <option value="54" data-icon="/img/argentina.svg">
+                                        54
+                                    </option>
+                                    <option value="55" data-icon="/img/brasil.svg">
+                                        55
+                                    </option>
+                                    <option value="56" data-icon="/img/chile.svg">
+                                        56
+                                    </option>
+                                    <option value="57" data-icon="/img/colombia.svg">
+                                        57
+                                    </option>
+                                    <option value="58" data-icon="/img/venezuela.svg">
+                                        58
+                                    </option>
+                                    <option value="502" data-icon="/img/guatemala.svg">
+                                        502
+                                    </option>
+                                    <option value="503" data-icon="/img/el-salvador.svg">
+                                        503
+                                    </option>
+                                    <option value="504" data-icon="/img/honduras.svg">
+                                        504
+                                    </option>
+                                    <option value="505" data-icon="/img/nicaragua.svg">
+                                        505
+                                    </option>
+                                    <option value="506" data-icon="/img/costa-rica.svg">
+                                        506
+                                    </option>
+                                    <option value="507" data-icon="/img/panama.svg">
+                                        507
+                                    </option>
+                                    <option value="591" data-icon="/img/bolivia.svg">
+                                        591
+                                    </option>
+                                    <option value="593" data-icon="/img/ecuador.svg">
+                                        593
+                                    </option>
+                                    <option value="598" data-icon="/img/uruguay.svg">
+                                        598
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="input-field col s8 m8">
+                                <input id="destination" type="tel" name="destination" />
+                                <label for="destination">Destinatario</label>
+                                <!--<span
+                                    class="helper-text"
+                                    data-error="wrong"
+                                    data-success="right"
+                                    >Helper text</span
+                                  >-->
+                            </div>
+
+                            <div class="input-field col s12 m12">
+                                <i class="material-icons prefix">sms</i>
+                                <textarea id="textarea1"
+                                          class="materialize-textarea"
+                                          data-length="160"
+                                          name="content"></textarea>
+                                <label for="textarea1">Texto del Mensaje</label>
+                            </div>
+                            <div class="input-field col s12 m12">
+                                <p>
+                                    <label>
+                                        <input type="checkbox" id="sandbox" />
+                                        <span for="sandbox"> Sandbox</span>
+                                    </label>
+                                </p>
+                            </div>
+                        </form>
+                        <div class="col s6 m6 center">
+                            <button class="btn waves-effect waves-light blue darken-1"
+                                    type="submit"
+                                    name="action"
+                                    form="apiform">
+                                Enviar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                        <div class="col s6 m6 center">
+                            <button id="request_credits"
+                                    class="btn waves-effect waves-light blue darken-1"
+                                    name="credit"
+                                    for="">
+                                Credito
+                                <i class="material-icons right">attach_money</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row w">
+        <div class="col s6 m6 offset-s3 offset-m3">
+            <h6 class="valign-wrapper center-align">
+                <i class="material-icons">warning</i>&nbsp;&nbsp; Por favor,
+                recuerda cambiar tu api key
+            </h6>
+        </div>
+    </div>
+
+    <span id="result1"></span>
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
+    </div>
+</div>
+
+

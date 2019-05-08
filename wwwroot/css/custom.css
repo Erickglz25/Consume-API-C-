@@ -1,0 +1,99 @@
+/* label focus color */
+.input-field input[type="tel"]:focus + label,
+.input-field input[type="text"]:focus + label {
+  color: #1e88e5 !important;
+}
+/* label underline focus color */
+.input-field input[type="tel"]:focus,
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid #1e88e5 !important;
+  box-shadow: 0 1px 0 0 #1e88e5 !important;
+}
+
+.material-icons.prefix.active {
+  color: #1e88e5 !important;
+}
+
+.input-field textarea:focus + label {
+  color: #1e88e5 !important;
+}
+
+.input-field textarea:focus {
+  border-bottom: 1px solid #1e88e5 !important;
+  box-shadow: 0 1px 0 0 #1e88e5 !important;
+}
+
+input.valid[type="text"]:not(.browser-default) {
+  border-bottom: 1px solid #1e88e5 !important;
+  box-shadow: 0 1px 0 0 #1e88e5 !important;
+}
+
+.dropdown-content li > a,
+.dropdown-content li > span {
+  color: #1e88e5 !important;
+}
+
+#token {
+  margin-bottom: 30px;
+}
+
+[type="radio"]:checked + span:after,
+[type="radio"].with-gap:checked + span:after {
+  background-color: #1e88e5 !important;
+}
+
+.tabs .tab a {
+  color: #6ba8dd !important;
+}
+
+.tabs .tab a:hover,
+.tabs .tab a.active {
+  color: #1e88e5 !important;
+}
+
+.tabs .indicator {
+  background-color: #4b97da !important;
+}
+
+input.invalid:not([type]),
+input.invalid:not([type]):focus,
+input.invalid[type="tel"]:not(.browser-default),
+input.invalid[type="tel"]:not(.browser-default):focus,
+input.invalid[type="text"]:not(.browser-default),
+input.invalid[type="text"]:not(.browser-default):focus,
+textarea.materialize-textarea.invalid,
+textarea.materialize-textarea.invalid:focus {
+  border-bottom: 1px solid #f44336 !important;
+  -webkit-box-shadow: 0 1px 0 0 #f44336 !important;
+  box-shadow: 0 1px 0 0 #f44336 !important;
+}
+
+.tabs .tab a:focus,
+.tabs .tab a:focus.active {
+  background-color: transparent !important;
+}
+
+header {
+  width: 100%;
+  min-height: 40px;
+}
+.container {
+  padding-top: 20px;
+}
+body {
+  background: #eef5f9;
+}
+
+h4 {
+  max-width: 1280px;
+}
+.card {
+  background: white;
+}
+
+.w {
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+  margin: 10px;
+}

@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet" />
+    <!--Import materialize.css-->
+    <link type="text/css"
+          rel="stylesheet"
+          href="~/vendor/materialize/css/materialize.min.css"
+          media="screen,projection" />
+
+    <link type="text/css"
+          rel="stylesheet"
+          href="~/css/custom.css"
+          media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Envios</title>
+</head>
+<body>
+
+    @RenderBody()
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript"
+            src="~/vendor/jQuery/jquery.3.3.1.js"></script>
+    <script type="text/javascript"
+            src="~/vendor/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript"
+            src="~/vendor/jquery.validate/jquery.validate.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#tokenform").validate({
+              rules: {
+                api: {
+                  required: true
+                }
+              },
+              messages: {
+                api: {
+                  required: "Requerido"
+                }
+              },
+              errorElement: "span",
+              errorPlacement: function(error, element) {
+                var placement = $(element).data("error");
+                if (placement) {
+                  $(placement).append(error);
+                } else {
+                  error.insertAfter(element);
+                }
+              },
+                submitHandler: function () {
+
+                let this_key = $("#api").val()
+
+                $.ajax({
+
+                  url: "@Html.Raw(@Url.Action("Auth", "sms", new { @action_cmd = "auth", @api_key = "_Key" }))".replace("_Key",this_key),
+                  method: "post",
+                  success: res => {
+                    res = JSON.parse(res);
+                    if (res.code != "auth_02") {
+                      swal({
+                        title: "Mensaje",
+                        text: res.message,
+                        icon: "info"
+                      });
+                      return;
+                    }
+
+                    $("#token").val(res.token);
+                    $("#token")
+                      .parent()
+                      .find("label")
+                      .addClass("active");
+                    swal({
+                      title: "Mensaje",
+                      text: res.message,
+                      icon: "info"
+                    });
+                  }
+                });
+              }
+            });
+
+
+
+
+
+
+        });
+    </script>
+</body>
+</html>
