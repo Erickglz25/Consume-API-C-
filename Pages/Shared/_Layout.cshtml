@@ -32,6 +32,7 @@
             src="~/vendor/jquery.validate/jquery.validate.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
+
         $(document).ready(function () {
 
             $("#tokenform").validate({
@@ -62,7 +63,8 @@
 
                   url: "@Html.Raw(@Url.Action("Auth", "sms", new { @action_cmd = "auth", @api_key = "_Key" }))".replace("_Key",this_key),
                   method: "post",
-                  success: res => {
+                    success: res => {
+                    console.log(res);
                     res = JSON.parse(res);
                     if (res.code != "auth_02") {
                       swal({
@@ -88,12 +90,8 @@
               }
             });
 
-
-
-
-
-
         });
+
     </script>
 </body>
 </html>
