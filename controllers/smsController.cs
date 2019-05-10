@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text;  // for class Encoding
 using System.IO;
+using Newtonsoft.Json;
 
 
 
@@ -94,6 +95,7 @@ namespace V2_API_CSHARP.controllers
                     {
                         response = (HttpWebResponse)request.GetResponse();
                         var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+  
                         return Content(responseString);
 
                     }
@@ -141,7 +143,7 @@ namespace V2_API_CSHARP.controllers
                     }
                     catch (WebException ex)
                     {
-                        return Content("{\"success\":false,\"message\":\"Usuario no autorizado\",\"status\":401,\"code\":\"auth_01\"}");
+                        return Content("{\"success\":false,\"message\":\"Informaci{on no disponible\",\"status\":401,\"code\":\"auth_01\"}");
                     }
 
                 }
@@ -149,6 +151,123 @@ namespace V2_API_CSHARP.controllers
             return Content("Default Server Error 500");
 
         }
+
+        [HttpPost]
+        [Route("Register")]
+        public IActionResult Register(string action_cmd, string token, string nombre, string c, string dest, string digitos, string formato)
+        {
+
+            if (action_cmd == "2fa_register")
+                if (token != "" && token != null)
+                {
+                    c = c.Replace(" ", "");
+                    int country = int.Parse(c);
+                    int dig = int.Parse(digitos);
+
+                    string url = $"https://api.smsmasivos.com.mx/protected/"+formato+"/phones/verification/start";
+
+                    var request = (HttpWebRequest)WebRequest.Create(url);
+
+                    var postData = $"phone_number={dest}&";
+                    postData += $"country_code={country}&";
+                    postData += $"company={nombre}&";
+                    postData += $"code_length={dig}";
+
+                    var data = Encoding.ASCII.GetBytes(postData);
+
+                    request.Method = "POST";
+                    request.Headers["token"] = token;
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+
+                    using (Stream stream = request.GetRequestStream())
+                    {
+                        stream.Write(data, 0, data.Length);
+                    }
+
+                    HttpWebResponse response = null;
+
+                    try
+                    {
+                        response = (HttpWebResponse)request.GetResponse();
+                        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                        return Content(responseString);
+                    }
+                    catch (WebException ex)
+                    {
+                        return Content("{\"success\":false,\"message\":\"Informaci{on no disponible\",\"status\":401,\"code\":\"auth_01\"}");
+                    }
+
+
+                }
+
+            return Content("Default Server Error 500");
+
+        }
+
+        [HttpPost]
+        [Route("Validate")]
+        public IActionResult Validate(string action_cmd, string token, string code, string dest, string formato)
+        {
+                                  
+            if (action_cmd == "2fa_validate")
+                if (token != "" && token != null)
+                {
+
+                    string url = $"https://api.smsmasivos.com.mx/protected/" + formato + "/phones/verification/check";
+
+                    var request = (HttpWebRequest)WebRequest.Create(url);
+
+                    var postData = $"phone_number={dest}&";
+                    postData += $"verification_code={code}";
+              
+
+                    var data = Encoding.ASCII.GetBytes(postData);
+
+                    request.Method = "POST";
+                    request.Headers["token"] = token;
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+
+                    using (Stream stream = request.GetRequestStream())
+                    {
+                        stream.Write(data, 0, data.Length);
+                    }
+
+                    HttpWebResponse response = null;
+
+                    try
+                    {
+                        response = (HttpWebResponse)request.GetResponse();
+                        var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+
+                        if (formato == "json") {
+
+                            dynamic result = JsonConvert.DeserializeObject(responseString);
+                            var message = result["message"];
+                            return Content(message);
+                        }
+                        else
+                        {
+                            return Content("XML");
+                        }
+
+                        
+
+                    }
+                    catch (WebException ex)
+                    {
+                        return Content("The code could not be verified");
+                    }
+
+
+                }
+
+            return Content("Default Server Error 500");
+
+        }
+
 
     }
 

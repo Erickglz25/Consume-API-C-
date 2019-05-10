@@ -26,3 +26,4 @@
 \\vmware-host\Shared Folders\Escritorio\V2-API-CSHARP\obj\Debug\netcoreapp2.1\V2-API-CSHARP.dll
 \\vmware-host\Shared Folders\Escritorio\V2-API-CSHARP\obj\Debug\netcoreapp2.1\V2-API-CSHARP.pdb
 \\vmware-host\Shared Folders\Escritorio\V2-API-CSHARP\obj\Debug\netcoreapp2.1\V2-API-CSHARP.csproj.CopyComplete
+\\vmware-host\Shared Folders\Escritorio\V2-API-CSHARP\obj\Debug\netcoreapp2.1\Razor\Pages\auth.g.cshtml.cs
