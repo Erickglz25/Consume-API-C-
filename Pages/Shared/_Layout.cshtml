@@ -31,15 +31,16 @@
     <script type="text/javascript"
             src="~/vendor/jquery.validate/jquery.validate.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
     <script>
-
-        $(document).ready(function () {
-
-            $("textarea#textarea1").characterCounter();
-            $("select").formSelect();
-            $(".tabs").tabs();
+        
+        $(document).ready(function() {
+          $("textarea#textarea1").characterCounter();
+          $("select").formSelect();
+          $(".tabs").tabs();
 
         });
+
 
         $(document).on("click", "li a", function() {
             if ($(this).hasClass("active")) {
@@ -110,8 +111,7 @@
         $("#request_credits").on("click", e => {
           $(e.currentTarget).addClass("disabled");
             var token = $("#token").val();
-
-          
+ 
           if ( token.trim() == "") {
             swal({
             title: "Advertencia",
@@ -127,16 +127,16 @@
             url: "@Html.Raw(@Url.Action("Credits", "sms", new { @action_cmd = "credits",@token = "_Token"}))".replace("_Token", token),
             type: "POST",
               success: res => {
-               
-              res = JSON.parse(res);
-              $("#request_credits").removeClass("disabled");
-              if (res[0] == 1) {
+
+                  $("#request_credits").removeClass("disabled");
+                  res = JSON.parse(res);
+              if (res.success == true) {
                 $("#apiform")
                   .get()[0]
                   .reset();
                 swal({
-                  title: "Total de cr\u00E9ditos",
-                  text: "Cr\u00E9ditos disponibles:  " + res[1],
+                  title: "Mensaje",
+                  text: "Cr\u00E9ditos disponibles:  " + res.credit,
                   icon: "info"
                 });
               } else {
@@ -144,8 +144,8 @@
                   .get()[0]
                   .reset();
                 swal({
-                  title: "Mensaje",
-                  text: res[1],
+                  title: "Información no Disponible",
+                  text: "",
                   icon: "warning"
                 });
               }
@@ -234,7 +234,7 @@
         });
 
 
-
+        
     </script>
 </body>
 </html>

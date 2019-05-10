@@ -104,7 +104,7 @@ namespace V2_API_CSHARP.controllers
 
                 }
 
-            return Content("Server Error 500");
+            return Content("Default Server Error 500");
 
         }
 
@@ -118,7 +118,9 @@ namespace V2_API_CSHARP.controllers
                     var request = (HttpWebRequest)WebRequest.Create("https://api.smsmasivos.com.mx/credits/consult");
                     var postData = "";
                     var data = Encoding.ASCII.GetBytes(postData);
+
                     request.Method = "POST";
+                    request.Headers["token"] = token;
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = data.Length;
 
@@ -144,7 +146,7 @@ namespace V2_API_CSHARP.controllers
 
                 }
 
-            return Content("Server Error 500");
+            return Content("Default Server Error 500");
 
         }
 
