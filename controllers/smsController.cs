@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;  // for class Encoding
 using System.IO;
 using Newtonsoft.Json;
+using System.Xml;
 
 
 
@@ -188,14 +189,35 @@ namespace V2_API_CSHARP.controllers
                     HttpWebResponse response = null;
 
                     try
-                    {
+                    {   
+                        //Ejemplo de respuesta sin procesar, el manejo se realiza en el front-end
                         response = (HttpWebResponse)request.GetResponse();
                         var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-                        return Content(responseString);
+
+                        if (formato == "json")
+                        {
+                            // Ejemplo de manejo de la respuesta en formato JSON
+                            dynamic result = JsonConvert.DeserializeObject(responseString);
+                            string message = result["message"];
+                            message = message.Replace("{", "");           
+                            message = message.Replace("}", "");
+                            return Content(message);
+
+                        }
+                        else
+                        {
+                            // Ejemplo de manejo de la respuesta en formato XML
+                            XmlDocument doc = new XmlDocument();
+                            doc.LoadXml(responseString);
+                            XmlNode node = doc.DocumentElement.SelectSingleNode("/hash/message");
+                            string text = node.InnerText;
+                            return Content(text);
+                        }
+
                     }
                     catch (WebException ex)
                     {
-                        return Content("{\"success\":false,\"message\":\"Informaci{on no disponible\",\"status\":401,\"code\":\"auth_01\"}");
+                            return Content("Información no disponible");
                     }
 
 
@@ -244,23 +266,28 @@ namespace V2_API_CSHARP.controllers
 
                         if (formato == "json") {
 
+                            // Ejemplo de manejo de la respuesta en formato JSON
                             dynamic result = JsonConvert.DeserializeObject(responseString);
-                            var message = result["message"];
+                            string message = result["message"];
+                            message = message.Replace("{", "");
+                            message = message.Replace("}", "");
                             return Content(message);
                         }
                         else
                         {
-                            return Content("XML");
-                        }
-
-                        
+                            // Ejemplo de manejo de la respuesta en formato XML
+                            XmlDocument doc = new XmlDocument();
+                            doc.LoadXml(responseString);
+                            XmlNode node = doc.DocumentElement.SelectSingleNode("/hash/message");
+                            string text = node.InnerText;
+                            return Content(text);
+                        }                  
 
                     }
                     catch (WebException ex)
                     {
                         return Content("The code could not be verified");
                     }
-
 
                 }
 
