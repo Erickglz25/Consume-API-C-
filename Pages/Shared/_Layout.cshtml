@@ -35,9 +35,9 @@
     <script>
         
         $(document).ready(function() {
-          $("textarea#textarea1").characterCounter();
-          $("select").formSelect();
-          $(".tabs").tabs();
+            $("textarea#textarea1").characterCounter();
+            $("select").formSelect();
+            $(".tabs").tabs();
 
         });
 
@@ -79,8 +79,12 @@
 
             $.ajax({
 
-                url: "@Html.Raw(@Url.Action("Auth", "sms", new { @action_cmd = "auth", @api_key = "_Key" }))".replace("_Key",this_key),
+                url: "@Html.Raw(@Url.Action("Auth", "sms"))",
                 method: "post",
+                data: {
+                    action_cmd: "auth",
+                    api_key: this_key
+                },
                 success: res => {
                     
                 res = JSON.parse(res);
@@ -110,48 +114,52 @@
 
         //credits
         $("#request_credits").on("click", e => {
-          $(e.currentTarget).addClass("disabled");
+            $(e.currentTarget).addClass("disabled");
             var token = $("#token").val();
  
-          if ( token.trim() == "") {
+            if ( token.trim() == "") {
             swal({
             title: "Advertencia",
             text:
                 "Debes introducir tu ApiKey y generar un token para poder enviar mensajes",
             icon: "warning"
             });
-              $("#request_credits").removeClass("disabled");
+                $("#request_credits").removeClass("disabled");
             return;
-          }
-
-          $.ajax({
-            url: "@Html.Raw(@Url.Action("Credits", "sms", new { @action_cmd = "credits",@token = "_Token"}))".replace("_Token", token),
-            type: "POST",
-              success: res => {
-
-                  $("#request_credits").removeClass("disabled");
-                  res = JSON.parse(res);
-              if (res.success == true) {
-                $("#apiform")
-                  .get()[0]
-                  .reset();
-                swal({
-                  title: "Mensaje",
-                  text: "Cr\u00E9ditos disponibles:  " + res.credit,
-                  icon: "info"
-                });
-              } else {
-                $("#apiform")
-                  .get()[0]
-                  .reset();
-                swal({
-                  title: "Información no Disponible",
-                  text: "",
-                  icon: "warning"
-                });
-              }
             }
-          });
+
+            $.ajax({
+                url: "@Html.Raw(@Url.Action("Credits", "sms"))",
+                data: {
+                    action_cmd: "credits",
+                    token: token
+                },
+            type: "POST",
+                success: res => {
+
+                    $("#request_credits").removeClass("disabled");
+                    res = JSON.parse(res);
+                if (res.success == true) {
+                $("#apiform")
+                    .get()[0]
+                    .reset();
+                swal({
+                    title: "Mensaje",
+                    text: "Cr\u00E9ditos disponibles:  " + res.credit,
+                    icon: "info"
+                });
+                } else {
+                $("#apiform")
+                    .get()[0]
+                    .reset();
+                swal({
+                    title: "Información no Disponible",
+                    text: "",
+                    icon: "warning"
+                });
+                }
+            }
+            });
         });
 
         //send
@@ -214,7 +222,16 @@
                 
             $.ajax({
 
-                url: "@Html.Raw(@Url.Action("Send", "sms", new { @action_cmd = "send", @token = "_Token" ,@c = "_Country", @dest = "_Destination", @texto = "_Texto", @sand= "_Sandbox", @nombre = "_Nombre"}))".replace("_Country", this_c).replace("_Destination", this_dest).replace("_Texto", this_texto).replace("_Sandbox", sandbox).replace("_Nombre", nombre).replace("_Token", token),
+                url: "@Html.Raw(@Url.Action("Send", "sms"))",
+                data: {
+                    action_cmd: "send",
+                    token: token,
+                    c: this_c,
+                    dest: this_dest,
+                    texto: this_texto,
+                    sand: sandbox,
+                    nombre: nombre
+                },
                 method: "post",
                 success: res => {
 
@@ -237,28 +254,28 @@
 
         //2faregister
         $("#regform").validate({
-          rules: {
+            rules: {
             destination: {
-              required: true,
-              minlength: 10
+                required: true,
+                minlength: 10
             }
-          },
-          messages: {
+            },
+            messages: {
             destination: {
-              required: "Requerido",
-              minlength: "M\u00EDnimo 10 d\u00EDgitos"
+                required: "Requerido",
+                minlength: "M\u00EDnimo 10 d\u00EDgitos"
             }
-          },
-          errorElement: "span",
-          errorPlacement: function(error, element) {
+            },
+            errorElement: "span",
+            errorPlacement: function(error, element) {
             var placement = $(element).data("error");
             if (placement) {
-              $(placement).append(error);
+                $(placement).append(error);
             } else {
-              error.insertAfter(element);
+                error.insertAfter(element);
             }
-          },
-          submitHandler: function() {
+            },
+            submitHandler: function() {
             var api = $("#api").val();
             var token = $("#token").val();
             var nombre = $("#nombre").val();
@@ -268,31 +285,40 @@
             var this_dest = $("#destination").val();
 
             if (api.trim() == "" || token.trim() == "") {
-              swal({
+                swal({
                 title: "Advertencia",
                 text:
-                  "Debes introducir tu ApiKey y generar un token para poder enviar mensajes",
+                    "Debes introducir tu ApiKey y generar un token para poder enviar mensajes",
                 icon: "warning"
-              });
-              return;
+                });
+                return;
             }
 
             $.ajax({
-              url: "@Html.Raw(@Url.Action("Register", "sms", new { @action_cmd = "2fa_register",@token = "_Token",@nombre = "_Nombre",@c = "_Country", @dest = "_Destination",@digitos = "_Digitos",@formato = "_Formato"}))".replace("_Token", token).replace("_Country", this_c).replace("_Destination", this_dest).replace("_Formato", formato).replace("_Digitos", digitos).replace("_Nombre",nombre),
-              method: "post",
+                url: "@Html.Raw(@Url.Action("Register", "sms"))",
+                data: {
+                    action_cmd: "2fa_register",
+                    token: token,
+                    nombre: nombre,
+                    c: this_c,
+                    dest: this_dest,
+                    digitos: digitos,
+                    formato: formato                
+                },
+                method: "post",
                 success: res => {
-            
+                
                 $("#regform")
-                  .get()[0]
-                  .reset();
+                    .get()[0]
+                    .reset();
                 swal({
-                  title: "Mensaje",
-                  text: res,
-                  icon: "info"
+                    title: "Mensaje",
+                    text: res,
+                    icon: "info"
                 });
-              }
+                }
             });
-          }
+            }
         });
 
         //2faverification
@@ -332,7 +358,7 @@
             var token = $("#token").val();
             var formato = $("input[name=group3]:checked").val();
             var this_dest = $("#destination_ve").val();
-                
+     
             var code = $("#verification").val();
 
             if (api.trim() == "" || token.trim() == "") {
@@ -346,9 +372,16 @@
             }
 
             $.ajax({
-              url: "@Html.Raw(@Url.Action("Validate", "sms", new { @action_cmd = "2fa_validate",@token = "_Token",@code = "_Code", @dest = "_Destination",@formato = "_Formato"}))".replace("_Token", token).replace("_Destination", this_dest).replace("_Formato", formato).replace("_Code", code),
-              method: "post",
-              success: res => {
+              url: "@Html.Raw(@Url.Action("Validate", "sms"))",
+                data: {
+                    action_cmd: "2fa_validate",
+                    token: token,
+                    code: code,
+                    dest: this_dest,
+                    formato: formato                
+                },
+                method: "post",
+                success: res => {
                 $("#valform")
                   .get()[0]
                   .reset();
@@ -361,8 +394,7 @@
             });
           }
         });
-
-        
+ 
     </script>
 </body>
 </html>
