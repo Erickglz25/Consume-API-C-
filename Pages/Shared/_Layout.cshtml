@@ -136,7 +136,7 @@
                 },
             type: "POST",
                 success: res => {
-
+                    console.log(res);
                     $("#request_credits").removeClass("disabled");
                     res = JSON.parse(res);
                 if (res.success == true) {

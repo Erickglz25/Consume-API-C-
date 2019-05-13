@@ -50,7 +50,8 @@ namespace V2_API_CSHARP.controllers
                 }
                 catch (WebException ex)
                 {
-                    return Content("{\"success\":false,\"message\":\"Usuario no autorizado\",\"status\":401,\"code\":\"auth_01\"}");
+                    var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+                    return Content(resp); // Ejemplo, respuesta procesada en el front-end
                 }
 
             }
@@ -102,7 +103,8 @@ namespace V2_API_CSHARP.controllers
                     }
                     catch (WebException ex)
                     {
-                        return Content("{\"success\":false,\"message\":\"Error al enviar el mensaje\",\"status\":501,\"code\":\"auth_01\"}");
+                        var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+                        return Content(resp); // Ejemplo, respuesta procesada en el front-ends
                     }
 
                 }
@@ -144,7 +146,8 @@ namespace V2_API_CSHARP.controllers
                     }
                     catch (WebException ex)
                     {
-                        return Content("{\"success\":false,\"message\":\"Informaci{on no disponible\",\"status\":401,\"code\":\"auth_01\"}");
+                        var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+                        return Content(resp); // Ejemplo, respuesta procesada en el front-end
                     }
 
                 }
@@ -176,6 +179,7 @@ namespace V2_API_CSHARP.controllers
 
                     var data = Encoding.ASCII.GetBytes(postData);
 
+                    
                     request.Method = "POST";
                     request.Headers["token"] = token;
                     request.ContentType = "application/x-www-form-urlencoded";
@@ -217,7 +221,33 @@ namespace V2_API_CSHARP.controllers
                     }
                     catch (WebException ex)
                     {
-                            return Content("Información no disponible");
+                        var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+
+
+                        if (formato == "json")
+                        {
+                            // Ejemplo de manejo de la respuesta en formato JSON
+                            dynamic result = JsonConvert.DeserializeObject(resp);
+                            string message = result["message"];
+                            message = message.Replace("{", "");
+                            message = message.Replace("}", "");
+                            message = message.Replace("Catch", "");
+                            message = message.Replace(":", "");
+
+                            return Content(message);
+
+                        }
+                        else
+                        {
+                            // Ejemplo de manejo de la respuesta en formato XML
+                            XmlDocument doc = new XmlDocument();
+                            doc.LoadXml(resp);
+                            XmlNode node = doc.DocumentElement.SelectSingleNode("/hash/message");
+                            string text = node.InnerText;
+                            text = text.Replace("Catch", "");
+                            text = text.Replace(":", "");
+                            return Content(text);
+                        }
                     }
 
 
@@ -286,7 +316,33 @@ namespace V2_API_CSHARP.controllers
                     }
                     catch (WebException ex)
                     {
-                        return Content("The code could not be verified");
+                        var resp = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
+
+
+                        if (formato == "json")
+                        {
+                            // Ejemplo de manejo de la respuesta en formato JSON
+                            dynamic result = JsonConvert.DeserializeObject(resp);
+                            string message = result["message"];
+                            message = message.Replace("{", "");
+                            message = message.Replace("}", "");
+                            message = message.Replace("Catch", "");
+                            message = message.Replace(":", "");
+
+                            return Content(message);
+                        }
+                        else
+                        {
+                            // Ejemplo de manejo de la respuesta en formato XML
+                            XmlDocument doc = new XmlDocument();
+                            doc.LoadXml(resp);
+                            XmlNode node = doc.DocumentElement.SelectSingleNode("/hash/message");
+                            string text = node.InnerText;
+                            text = text.Replace("Catch", "");
+                            text = text.Replace(":", "");
+                            return Content(text);
+                        }
+
                     }
 
                 }
